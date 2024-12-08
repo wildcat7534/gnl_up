@@ -1,0 +1,5 @@
+2:	1ere ligne
+2:	2eme L
+2:
+2:	apres vide
+2:	terminer
