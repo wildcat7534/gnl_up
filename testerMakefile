@@ -1,0 +1,16 @@
+CC=gcc
+CFLAGS=-I/usr/include/CUnit
+LDFLAGS=-lcunit
+TARGET=test
+SOURCES=get_next_line_bonus_test.c get_next_line_bonus.c get_next_line_utils_bonus.c get_next_line_bonus.h
+
+all: $(TARGET)
+
+$(TARGET): $(SOURCES)
+	$(CC) $(CFLAGS) $(SOURCES) -o $(TARGET) $(LDFLAGS)
+
+run: $(TARGET)
+	./$(TARGET)
+
+clean:
+	rm -f $(TARGET)

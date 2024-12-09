@@ -6,10 +6,9 @@
 /*   By: cmassol <cmassol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:56:06 by cmassol           #+#    #+#             */
-/*   Updated: 2024/12/08 19:45:30 by cmassol          ###   ########.fr       */
+/*   Updated: 2024/12/09 01:39:48 by cmassol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "get_next_line_bonus.h"
 
@@ -17,8 +16,9 @@ char	*make_stash(int fd, char *str_stash)
 {
 	char	*buffer;
 	int		o_read;
+	char	*temp;
 
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
 	o_read = 1;
@@ -30,13 +30,17 @@ char	*make_stash(int fd, char *str_stash)
 			free(buffer);
 			return (NULL);
 		}
-		else if (o_read == 0)
+		/*else if (o_read == 0)
 		{
 			free(buffer);
 			return (str_stash);
-		}
+		}*/
 		buffer[o_read] = '\0';
-		str_stash = ft_strjoin(str_stash, buffer);
+		temp = ft_strjoin(str_stash, buffer);
+		if (!temp)
+			return (NULL);
+		// free(str_stash);
+		str_stash = temp;
 	}
 	free(buffer);
 	return (str_stash);
@@ -47,12 +51,12 @@ char	*extract_line(char *str_stash)
 	int		i;
 	char	*line;
 
+	i = 0;
 	if (!str_stash[0])
 		return (NULL);
-	i = 0;
 	while (str_stash[i] && str_stash[i] != '\n')
 		i++;
-	line = malloc(sizeof(char) * (i + 2));
+	line = (char *)malloc(sizeof(char) * (i + 2));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -84,7 +88,7 @@ char	*update_stash(char *str_stash)
 		free(str_stash);
 		return (NULL);
 	}
-	new_stash = malloc(sizeof(char) * (ft_strlen(str_stash) - i + 1));
+	new_stash = (char *)malloc(sizeof(char) * (ft_strlen(str_stash) - i + 1));
 	if (!new_stash)
 		return (NULL);
 	i++;
@@ -101,14 +105,19 @@ char	*get_next_line(int fd)
 	static char	*str_stash[MAX_FD];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= MAX_FD || read(fd, 0, 0) == -1)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > MAX_FD || read(fd, 0, 0) == -1)
 		return (NULL);
-/*	while (fd)
-	{
-		str_stash[fd] = make_stash(fd, str_stash[fd]);
-		if (!str_stash[fd])
-			return (NULL);
-	}*/
+	if (!str_stash[fd])
+		str_stash[fd] = ft_strdup("");
+	if (!str_stash[fd])
+		return (NULL);
+	/*	while (fd)
+		{
+			str_stash[fd] = make_stash(fd, str_stash[fd]);
+			if (!str_stash[fd])
+				return (NULL);
+		}*/
+	// printf("[str_stash[fd] = %s || fd = %d]\n", str_stash[fd], fd);
 	str_stash[fd] = make_stash(fd, str_stash[fd]);
 	if (!str_stash[fd])
 		return (NULL);
@@ -119,5 +128,6 @@ char	*get_next_line(int fd)
 		free(str_stash[fd]);
 		str_stash[fd] = NULL;
 	}
+	// printf("[fd = %d || line = %s]\n", fd, line);
 	return (line);
 }

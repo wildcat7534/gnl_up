@@ -6,7 +6,7 @@
 /*   By: cmassol <cmassol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 22:56:09 by cmassol           #+#    #+#             */
-/*   Updated: 2024/12/06 22:57:48 by cmassol          ###   ########.fr       */
+/*   Updated: 2024/12/09 01:06:32 by cmassol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #  define BUFFER_SIZE 42
 # endif
 
-# define MAX_FD 1024 + 1
+# define MAX_FD 1024
 
 # include <fcntl.h>
 # include <stdint.h>
